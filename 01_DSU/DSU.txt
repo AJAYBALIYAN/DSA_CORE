@@ -1,0 +1,19 @@
+DSU (O(4alpha)),alpha~=1
+
+-> tells whether 2 nodes belong to the same component of graph
+-> this same can be done by BFS/DFS t.c=O(n+e) , but DSU do this in O(1).
+-> usually used in dynamic graphs.(where their configuration keeps on changing)
+-> 2 functions 1. findparent() 2. union() rank,size.(2 implementations)
+-> rank is no. of childs below it.
+-> we are not creating graph here , a different ds is being created here
+
+-> union()
+    1.findparent() of u and v (ultimate parents).
+    2. get the ranks of the parent of u and v 
+    3. always connect smaller rank to larger rank. (rank only increases in case of equal ranks)
+
+    -> it takes log(n) to findparent() of u and v so we apply path compression to make it O(1).x
+
+-> findparent() of u and v
+
+    1.
