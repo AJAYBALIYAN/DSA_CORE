@@ -1,0 +1,7 @@
+Dijksatra
+
+-> to find the shortest distance of all the nodes from the source.
+-> it can also be implemented by priority queue and sets.
+-> fails with negative weight edges as the distance will always be reduced in adding -ve weight to it(bellman)
+-> sets O(V^2) it can be optimized to O(E*logV) by PQ.
+-> 
