@@ -6,6 +6,7 @@ class DisjointUnionSets {
     vector<int> rank, parent;
 
 public:
+  
     // Constructor to initialize sets
     DisjointUnionSets(int n) {
         rank.resize(n, 0);
@@ -20,11 +21,11 @@ public:
     // Find the representative of the set that x belongs to
     int find(int i) {
         int root = parent[i];
-
+      
         if (parent[root] != root) {
             return parent[i] = find(root);
         }
-
+      
         return root;
     }
 
@@ -34,7 +35,7 @@ public:
         int yRoot = find(y);
 
         // If they are in the same set, no need to union
-        // if (xRoot == yRoot) return;
+        if (xRoot == yRoot) return;
 
         // Union by rank
         if (rank[xRoot] < rank[yRoot]) {
@@ -42,12 +43,11 @@ public:
         } else if (rank[yRoot] < rank[xRoot]) {
             parent[yRoot] = xRoot;
         } else {
-            parent[xRoot] = yRoot;
-            rank[yRoot]++;
+            parent[yRoot] = xRoot;
+            rank[xRoot]++;
         }
     }
 
-    // Method to print parent and rank information
     void printSets() {
         cout << "Element -> Parent -> Rank" << endl;
         for (size_t i = 0; i < parent.size(); i++) {
@@ -57,21 +57,38 @@ public:
 };
 
 int main() {
-    // Let there be 9 elements with ids 0 to 8
+    // Let there be 5 persons with ids 0, 1, 2, 3, and 4
     int n = 9;
-    DisjointUnionSets dus(n);
+    DisjointUnionSets dsu(n);
 
-    // Perform union operations
-    dus.unionSets(1, 2);
-    dus.unionSets(2, 3);
-    dus.unionSets(4, 5);
-    dus.unionSets(6, 7);
-    dus.unionSets(4, 7);
-    dus.unionSets(7, 8);
-    dus.unionSets(5, 8);
+    dsu.unionSets(1,2);
+    dsu.unionSets(2,3);
+    
+    dsu.unionSets(4,5);
 
-    // Print the parent and rank information
-    dus.printSets();
+
+    dsu.unionSets(6,7);
+    dsu.unionSets(4,7);
+
+
+    dsu.unionSets(7,8);
+    dsu.unionSets(5,8);
+
+    // Check if 4 is a friend of 0
+    if (dsu.find(2) == dsu.find(5))
+        cout << "Yes\n";
+    else
+        cout << "No\n";
+
+    // Check if 1 is a friend of 0
+    if (dsu.find(1) == dsu.find(7))
+        cout << "Yes\n";
+    else
+        cout << "No\n";
+
+    
+        dsu.printSets();
+
 
     return 0;
 }

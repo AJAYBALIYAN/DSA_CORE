@@ -2,67 +2,99 @@
 
 using namespace std;
 
-int findParent(int u,vector<int>&parent)
-{
-    if(u==parent[u]) return u;
+class DSU{
 
-    return parent[u]=findParent(parent[u],parent);
-}
+    vector<int>rank,parent;
 
-void union_find(int u,int v,vector<int>&parent,vector<int>&rank)
-{
-    int pu=findParent(u,parent);
-    int pv=findParent(v,parent);
+public: 
 
-    int ru=rank[pu];
-    int rv=rank[pv];
+        DSU(int n)
+        {
+            rank.resize(n,0);
+            parent.resize(n);
 
-    if(ru==rv) return;
+            for(int i=0 ; i<n ; i++)
+            {
+                parent[i]=i;
+            }
+        }
 
-    if(ru==rv) 
-    {
-        parent[pu]=pv;
-        rank[pv]++;
-    }
 
-    else if(ru<rv)
-    {
-        parent[pu]=pv;
-    }
+        int findParent(int u)
+        {
+            if(u==parent[u]) return u;
 
-    else parent[pv]=pu;
+            return parent[u]=findParent(parent[u]);
+        }
 
-}
 
+        void union_find(int u,int v)
+        {
+            int pu=findParent(u);
+            int pv=findParent(v);
+
+            int ru=rank[pu];
+            int rv=rank[pv];
+
+            if(pu==pv) return; // dont increase the rank if they have same parent
+
+            if(ru==rv) 
+            {
+                parent[pv]=pu;
+                rank[pu]++;
+            }
+
+            else if(ru<rv)
+            {
+                parent[pu]=pv;
+            }
+
+            else parent[pv]=pu;
+
+        }
+
+        void check(int u, int v)
+        {
+            int pu=findParent(u);
+            int pv=findParent(v);
+
+            if(pu==pv) cout<<u<<" and "<<v<<" are in same set"<<endl;
+            else cout<<u<<" and "<<v<<" are in different set"<<endl;
+        }
+
+        void printSets() {
+            cout << "Element -> Parent -> Rank" << endl;
+            for (size_t i = 0; i < parent.size(); i++) {
+                cout << i << " -> " << parent[i] << " -> " << rank[i] << endl;
+            }
+        }
+};
 
 
 int main()
 {
     int n;
-    cin>>n;
+    // cin>>n;
+    n=9;
 
-    vector<int>p(n),r(n,0);
+    DSU dsu(n);
 
-    for(int i=0;i<n;i++)
-    {
-        p[i]=i;
-    }
-
-    union_find(1,2,p,r);
-    union_find(2,3,p,r);
+    dsu.union_find(1,2);
+    dsu.union_find(2,3);
     
-    union_find(4,5,p,r);
+    dsu.union_find(4,5);
 
-    union_find(6,7,p,r);
-    union_find(4,7,p,r);
-    union_find(7,8,p,r);
-    union_find(5,8,p,r);
+    dsu.check(2,5);
 
-    for(int i=0;i<n;i++)
-    {
-        cout<<i<<" -> "<<p[i]<<" -> "<<r[i]<<endl;
-    }   
+    dsu.union_find(6,7);
+    dsu.union_find(4,7);
 
+    dsu.check(2,5);
+
+    dsu.union_find(7,8);
+    dsu.union_find(5,8);
+
+    dsu.printSets();
 
     return 0;
 }
